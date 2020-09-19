@@ -3,7 +3,69 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Document</title>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.14.0/css/all.min.css"
+      integrity="sha512-1PKOgIY59xJ8Co8+NE6FZ+LOAZKjy+KY8iq0G4B3CyeY6wYHN3yt9PW0XpSriVlkMXe40PTKnXrLnZ9+fkDaog=="
+      crossorigin="anonymous"
+    />
+    <link rel="stylesheet" href="style.css" />
+    <title>Paint Clone</title>
   </head>
-  <body></body>
+  <body>
+    <!-- Sidebar -->
+    <div class="sidebar">
+      <!-- Active Tool -->
+      <div class="active-tool">
+        <span id="activeTool" title="Active Tool">Brush</span>
+      </div>
+      <!-- Clear Canvas -->
+      <div class="tool">
+        <i class="fas fa-sync" id="clearCanvas" title="Clear Canvas"></i>
+      </div>
+      <!-- Save To Local Storage -->
+      <div class="tool">
+        <i
+          class="fas fa-cloud-download-alt"
+          id="saveToLocalStorage"
+          title="Save To Local Storage"
+        ></i>
+      </div>
+      <!-- Load from Local Storage -->
+      <div class="tool">
+        <i
+          class="fas fa-cloud-upload-alt"
+          id="loadFromLocalStorage"
+          title="Load From Local Storage"
+        ></i>
+      </div>
+      <!-- Clear Local Storage -->
+      <div class="tool">
+        <i
+          class="fas fa-trash"
+          id="clearLocalStorage"
+          title="Clear Local Storage"
+        ></i>
+      </div>
+      <!-- Save Image -->
+      <div class="tool">
+        <i class="fas fa-download" id="saveImage" title="Save Image"></i>
+      </div>
+      <!-- Brush Tool -->
+      <div class="brush tool">
+        <i class="fas fa-paint-brush" id="brush" title="Brush"></i>
+        <input type="range" id="brushColor" />
+        <span class="size" id="brushSize" title="BrushSize">10</span>
+        <input type="range" id="brushSlider" class="slider" />
+      </div>
+      <!-- Bucket Tool -->
+      <div class="bucket tool">
+        <i class="fas fa-fill" title="Background Color"></i>
+        <input type="range" id="backgroundColor" />
+      </div>
+    </div>
+
+    <!-- Script -->
+    <script src="script.js"></script>
+  </body>
 </html>
