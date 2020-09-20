@@ -160,6 +160,7 @@ body {
 }
 
 /* JS Color */
+/* class that will be set to elements having jscolor installed on them -- from script */
 .jscolor {
   border-style: solid;
   border-radius: 5px;
