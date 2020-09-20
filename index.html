@@ -17,7 +17,7 @@
     <div class="sidebar">
       <!-- Active Tool -->
       <div class="active-tool">
-        <span id="activeTool" title="Active Tool">Brush</span>
+        <span id="activeTool" title="Active Tool">Erase</span>
       </div>
       <!-- Clear Canvas -->
       <div class="tool">
@@ -54,18 +54,44 @@
       <!-- Brush Tool -->
       <div class="brush tool">
         <i class="fas fa-paint-brush" id="brush" title="Brush"></i>
-        <input type="range" id="brushColor" />
-        <span class="size" id="brushSize" title="BrushSize">10</span>
-        <input type="range" id="brushSlider" class="slider" />
+        <input
+          id="brushColor"
+          class="jscolor"
+          data-jscolor="{alphaElement:'#alp2'}"
+          value="FFA000"
+          name="color2[value]"
+        />
+        <span class="size" id="brushSize" title="BrushSize">25</span>
+        <input
+          type="range"
+          id="brushSlider"
+          min="1"
+          max="50"
+          value="50"
+          class="slider"
+        />
       </div>
       <!-- Bucket Tool -->
       <div class="bucket tool">
         <i class="fas fa-fill" title="Background Color"></i>
-        <input type="range" id="backgroundColor" />
+        <input
+          id="backgroundColor"
+          class="jscolor"
+          data-jscolor="{alphaElement:'#alp2'}"
+          value="FFA000"
+          name="color2[value]"
+        />
       </div>
+    </div>
+    <!-- Canvas -->
+    <canvas id="canvas"></canvas>
+    <!-- Small Screen Info -->
+    <div class="small-screen-message">
+      <h2>At least screen 700x700 pixels required</h2>
     </div>
 
     <!-- Script -->
+    <script src="jscolor.js"></script>
     <script src="script.js"></script>
   </body>
 </html>
