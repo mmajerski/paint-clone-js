@@ -48,7 +48,7 @@ body {
 }
 
 .fa-sync {
-  top: 90px;
+  top: 70px;
 }
 
 .fa-sync:hover {
@@ -56,15 +56,15 @@ body {
 }
 
 .fa-cloud-download-alt {
-  top: 190px;
+  top: 130px;
 }
 
 .fa-cloud-upload-alt {
-  top: 240px;
+  top: 180px;
 }
 
 .fa-trash {
-  top: 290px;
+  top: 230px;
 }
 
 .fa-trash:hover {
@@ -72,7 +72,7 @@ body {
 }
 
 .fa-download {
-  top: 340px;
+  top: 280px;
 }
 
 .fa-paint-brush {
@@ -87,7 +87,7 @@ body {
 
 .brush {
   position: absolute;
-  top: 470px;
+  top: 400px;
   left: 30px;
   display: flex;
   flex-direction: column;
@@ -118,11 +118,19 @@ body {
 
 .bucket {
   position: absolute;
-  top: 650px;
+  top: 590px;
   left: 30px;
   display: flex;
   flex-direction: column;
   text-align: center;
+}
+
+.fa-eraser {
+  top: 650px;
+}
+
+.active {
+  filter: brightness(50%);
 }
 
 /* Slider */

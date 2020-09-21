@@ -17,7 +17,7 @@
     <div class="sidebar">
       <!-- Active Tool -->
       <div class="active-tool">
-        <span id="activeTool" title="Active Tool">Erase</span>
+        <span id="activeTool" title="Active Tool">Brush</span>
       </div>
       <!-- Clear Canvas -->
       <div class="tool">
@@ -53,22 +53,31 @@
       </div>
       <!-- Brush Tool -->
       <div class="brush tool">
-        <i class="fas fa-paint-brush" id="brush" title="Brush"></i>
-        <input id="brushColor" class="jscolor" value="FFA000" />
-        <span class="size" id="brushSize" title="BrushSize">25</span>
+        <i class="fas fa-paint-brush active" id="brush" title="Brush"></i>
+        <input id="brushColor" data-jscolor="" class="jscolor" value="000000" />
+        <span class="size" id="brushSize" title="BrushSize">10</span>
         <input
           type="range"
           id="brushSlider"
           min="1"
           max="50"
-          value="50"
+          value="10"
           class="slider"
         />
       </div>
       <!-- Bucket Tool -->
       <div class="bucket tool">
         <i class="fas fa-fill" title="Background Color"></i>
-        <input id="backgroundColor" class="jscolor" value="FFA000" />
+        <input
+          id="backgroundColor"
+          data-jscolor=""
+          class="jscolor"
+          value="FFFFFF"
+        />
+      </div>
+      <!-- Erase Tool -->
+      <div class="erase tool">
+        <i class="fas fa-eraser" title="Erase" id="erase"></i>
       </div>
     </div>
     <!-- Canvas -->
