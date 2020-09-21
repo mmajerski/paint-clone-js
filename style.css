@@ -85,7 +85,7 @@ body {
   filter: brightness(90%);
 }
 
-.brush {
+.paint {
   position: absolute;
   top: 400px;
   left: 30px;

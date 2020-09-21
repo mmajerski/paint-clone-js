@@ -1,32 +1,38 @@
-const activeToolText = document.getElementById("activeTool");
+const activeToolTxt = document.getElementById("activeTool");
 const clearCanvasBtn = document.getElementById("clearCanvas");
 const saveToLocalStoarageBtn = document.getElementById("saveToLocalStorage");
 const loadFromLocalStorageBtn = document.getElementById("loadFromLocalStorage");
 const clearLocalStorageBtn = document.getElementById("clearLocalStorage");
-const saveImageBtn = document.getElementById("saveImage");
-const brushBtn = document.getElementById("brush");
-const brushColorBtn = document.getElementById("brushColor");
-const brushSizeTxt = document.getElementById("brushSize");
-const brushSlider = document.getElementById("brushSlider");
+const downloadBtn = document.getElementById("download");
+const paintBtn = document.getElementById("paint");
+const paintColorInput = document.getElementById("paintColor");
+const paintSizeTxt = document.getElementById("paintSize");
+const paintSlider = document.getElementById("paintSlider");
 const backgroundColorBtn = document.getElementById("backgroundColor");
 const eraseBtn = document.getElementById("erase");
 
+jscolor.presets.default = { position: "right", backgroundColor: "#333" };
+
 // Global settings
-let lineColor = "#000";
-let brushSize = 10;
-let activeTool = "brush";
-let backgroundColor = "#fff";
-let isMouseDown = false;
-const drawing = [];
+let lineColorGlobal = "#000000";
+let paintSizeGlobal = 10;
+let activeToolGlobal = "paint";
+let backgroundColorGlobal = "#FFFFFF";
+let isMouseDownGlobal = false;
+let drawingGlobal = [];
 
 // Canvas
+const fillCanvasBackground = () => {
+  context.fillStyle = backgroundColorGlobal;
+  context.fillRect(0, 0, canvas.width, canvas.height);
+};
+
 const canvas = document.getElementById("canvas");
 const context = canvas.getContext("2d");
 
 canvas.width = window.innerWidth - 200;
 canvas.height = window.innerHeight;
-context.fillStyle = backgroundColor;
-context.fillRect(0, 0, canvas.width, canvas.height);
+fillCanvasBackground();
 
 const getMousePosition = (e) => {
   const boundaries = canvas.getBoundingClientRect();
@@ -37,92 +43,173 @@ const getMousePosition = (e) => {
 };
 
 canvas.addEventListener("mousedown", (e) => {
-  isMouseDown = true;
+  isMouseDownGlobal = true;
 
   const { x, y } = getMousePosition(e);
   context.moveTo(x, y);
   context.beginPath();
-  context.lineWidth = brushSize;
+  context.lineWidth = paintSizeGlobal;
   context.lineCap = "round";
-  context.strokeStyle = lineColor;
+
+  if (activeToolGlobal === "paint") {
+    context.strokeStyle = lineColorGlobal;
+  } else {
+    context.strokeStyle = backgroundColorGlobal;
+  }
 });
 
 canvas.addEventListener("mousemove", (e) => {
-  if (isMouseDown) {
+  if (isMouseDownGlobal) {
     const { x, y } = getMousePosition(e);
-    drawing.push({ x, y, lineColor, activeTool });
+
+    drawingGlobal.push({
+      x,
+      y,
+      activeTool: activeToolGlobal,
+      lineColor: lineColorGlobal,
+      paintSize: paintSizeGlobal
+    });
+
     context.lineTo(x, y);
     context.stroke();
   }
 });
 
 canvas.addEventListener("mouseup", () => {
-  isMouseDown = false;
+  isMouseDownGlobal = false;
+});
+
+// Local Storage / Download Image
+saveToLocalStoarageBtn.addEventListener("click", () => {
+  const drawingData = {
+    backgroundColor: backgroundColorGlobal,
+    drawing: drawingGlobal
+  };
+  localStorage.setItem("drawing", JSON.stringify(drawingData));
+
+  changeActiveToolTxt("Saved");
+});
+
+loadFromLocalStorageBtn.addEventListener("click", () => {
+  if (localStorage.getItem("drawing")) {
+    const { backgroundColor, drawing } = JSON.parse(
+      localStorage.getItem("drawing")
+    );
+
+    backgroundColorGlobal = backgroundColor;
+    drawingGlobal = drawing;
+  }
+
+  fillCanvasBackground();
+
+  if (drawingGlobal.length > 0) {
+    repaintFromArray();
+  }
+
+  changeActiveToolTxt("Load");
+});
+
+clearLocalStorageBtn.addEventListener("click", () => {
+  if (localStorage.getItem("drawing")) {
+    localStorage.removeItem("drawing");
+  }
+
+  changeActiveToolTxt("Clear");
+});
+
+downloadBtn.addEventListener("click", () => {
+  downloadBtn.href = canvas.toDataURL("image/jpeg", 1.0);
+  downloadBtn.download = "paint-drawing.jpeg";
+
+  changeActiveToolTxt("Saved");
 });
 
 // Buttons
 clearCanvasBtn.addEventListener("click", () => {
-  context.fillStyle = backgroundColor;
-  context.fillRect(0, 0, canvas.width, canvas.height);
-  activeToolText.textContent = "Clear";
-  setTimeout(() => {
-    activeToolText.textContent = document.querySelector(".active").title;
-  }, 500);
+  fillCanvasBackground();
+  drawingGlobal = [];
+
+  changeActiveToolTxt("Clear");
 });
 
-brushBtn.addEventListener("click", () => {
+paintBtn.addEventListener("click", () => {
   eraseBtn.classList.remove("active");
-  brushBtn.classList.add("active");
-  activeTool = "brush";
-  activeToolText.textContent = "Brush";
-  lineColor = brushColorBtn.value;
+  paintBtn.classList.add("active");
+
+  activeToolGlobal = "paint";
+  activeToolTxt.textContent = "Paint";
+
+  lineColorGlobal = paintColorInput.value;
 });
 
-brushColorBtn.addEventListener("change", (e) => {
-  lineColor = e.target.value;
+paintColorInput.addEventListener("change", (e) => {
+  lineColorGlobal = e.target.value;
 });
 
-brushSlider.addEventListener("change", (e) => {
-  brushSize = e.target.value;
-  brushSizeTxt.textContent = brushSize;
+paintSlider.addEventListener("change", (e) => {
+  paintSizeGlobal = e.target.value;
+  paintSizeTxt.textContent = paintSizeGlobal;
 });
 
 backgroundColorBtn.addEventListener("change", (e) => {
-  backgroundColor = e.target.value;
-  lineColor = backgroundColor;
-  context.fillStyle = backgroundColor;
-  context.fillRect(0, 0, canvas.width, canvas.height);
+  backgroundColorGlobal = e.target.value;
+  fillCanvasBackground();
 
-  context.moveTo(drawing[0].x, drawing[0].y);
-  let prevColor = drawing[0].lineColor;
-  context.strokeStyle = prevColor;
+  if (drawingGlobal.length > 0) {
+    repaintFromArray();
+  }
+});
+
+eraseBtn.addEventListener("click", () => {
+  paintBtn.classList.remove("active");
+  eraseBtn.classList.add("active");
+
+  activeToolGlobal = "erase";
+  activeToolTxt.textContent = "Erase";
+  lineColorGlobal = backgroundColorGlobal;
+});
+
+// helpers
+const changeActiveToolTxt = (text) => {
+  activeToolTxt.textContent = text;
+  setTimeout(() => {
+    activeToolTxt.textContent = document.querySelector(".active").title;
+  }, 500);
+};
+
+const repaintFromArray = () => {
+  let prevColor = drawingGlobal[0].lineColor;
+  let prevPaintSize = drawingGlobal[0].paintSize;
+
+  context.moveTo(drawingGlobal[0].x, drawingGlobal[0].y);
   context.beginPath();
-  console.log(drawing);
-  drawing.forEach(({ x, y, lineColor, activeTool }) => {
-    if (lineColor !== prevColor) {
+  context.lineCap = "round";
+
+  drawingGlobal.forEach(({ x, y, lineColor, activeTool, paintSize }) => {
+    if (prevColor !== lineColor || prevPaintSize != paintSize) {
+      prevPaintSize = paintSize;
       prevColor = lineColor;
+
       context.stroke();
-      context.strokeStyle = lineColor;
+
       if (activeTool === "erase") {
-        context.strokeStyle = backgroundColor;
+        context.strokeStyle = backgroundColorGlobal;
+      } else {
+        context.strokeStyle = prevColor;
       }
       context.moveTo(x, y);
       context.beginPath();
     } else {
       if (activeTool === "erase") {
-        context.strokeStyle = backgroundColor;
+        context.lineWidth = prevPaintSize;
+        context.strokeStyle = backgroundColorGlobal;
+        context.lineTo(x, y);
+      } else {
+        context.lineWidth = prevPaintSize;
+        context.strokeStyle = prevColor;
+        context.lineTo(x, y);
       }
-      context.lineTo(x, y);
     }
   });
   context.stroke();
-});
-
-eraseBtn.addEventListener("click", () => {
-  brushBtn.classList.remove("active");
-  eraseBtn.classList.add("active");
-  activeTool = "erase";
-  activeToolText.textContent = "Erase";
-  console.log(backgroundColor);
-  lineColor = backgroundColor;
-});
+};

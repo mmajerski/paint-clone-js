@@ -17,7 +17,7 @@
     <div class="sidebar">
       <!-- Active Tool -->
       <div class="active-tool">
-        <span id="activeTool" title="Active Tool">Brush</span>
+        <span id="activeTool" title="Active Tool">Paint</span>
       </div>
       <!-- Clear Canvas -->
       <div class="tool">
@@ -49,16 +49,16 @@
       </div>
       <!-- Save Image -->
       <div class="tool">
-        <i class="fas fa-download" id="saveImage" title="Save Image"></i>
+        <a id="download"><i class="fas fa-download" title="Save Image"></i></a>
       </div>
-      <!-- Brush Tool -->
-      <div class="brush tool">
-        <i class="fas fa-paint-brush active" id="brush" title="Brush"></i>
-        <input id="brushColor" data-jscolor="" class="jscolor" value="000000" />
-        <span class="size" id="brushSize" title="BrushSize">10</span>
+      <!-- Paint Tool -->
+      <div class="paint tool">
+        <i class="fas fa-paint-brush active" id="paint" title="Paint"></i>
+        <input id="paintColor" data-jscolor="" class="jscolor" value="000000" />
+        <span class="size" id="paintSize" title="Paint Size">10</span>
         <input
           type="range"
-          id="brushSlider"
+          id="paintSlider"
           min="1"
           max="50"
           value="10"
