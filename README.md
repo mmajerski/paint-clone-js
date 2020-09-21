@@ -18,3 +18,7 @@ Very straightforward implementation of the Paint. Done using VanillaJS and HTML 
 ### How it looks:
 
 ![](overview.gif)
+
+### Check it live:
+
+[Paint Clone](https://userq11.github.io/paint-clone-js/).
